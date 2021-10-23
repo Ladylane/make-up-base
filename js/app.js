@@ -1,17 +1,34 @@
-console.log("BEGIN");
+console.log("LOADING");
 
-let productsPromisse = fetch(
-  "http://makeup-api.herokuapp.com/api/v1/products.json"
-);
+loadPage()
 
-productsPromisse.then((resp) => {
-  resp.json().then((products) => {
-    let productsHtml = loadProducts(products);
-    let brandsHtml = loadBrands(products);
-    document.getElementById("catalog").innerHTML = productsHtml;
-    document.getElementById("filter-brand").innerHTML = brandsHtml;
+function loadPage(brand) {
+
+  var url = NaN
+  if (!brand) {
+    url = "http://makeup-api.herokuapp.com/api/v1/products.json"
+  } else {
+    url = "http://makeup-api.herokuapp.com/api/v1/products.json?brand=" + brand
+  }
+  console.log("URL" + url)
+
+  let productsPromisse = fetch(url);
+
+  productsPromisse.then((resp) => {
+    resp.json().then((products) => {
+      document.getElementById("catalog").innerHTML = loadProducts(products);
+      document.getElementById("filter-brand").innerHTML = loadBrands(products);
+      document.getElementById("filter-type").innerHTML = loadProductType(products);
+
+      fb = document.getElementById("filter-brand")
+
+      fb.addEventListener("change", function () {
+        sendId(this.value)
+      }, false);
+
+    });
   });
-});
+}
 
 function loadProducts(products) {
   let rows = products.map((product) => {
@@ -25,22 +42,21 @@ function loadBrands(products) {
     .filter((value, index, self) => self.indexOf(value) == index);
 
   let options = rows.map(brand => {
-    return `<option>${brand}</option>`
+    return `<option value=${brand}>${brand}</option>`
   })
-
-  // console.log("Rows", rows[0])
-  // console.log("Rows", rows[1])
-  // let = options = `<option>${rows.join("")}</option>`
-
-  //  return `<option>${rows.join(" ")}</option>`
-  console.log("PRINT", options)
-
-  // return options;
   return options;
-
 }
 
-//EXEMPLO DO CÓDIGO PARA UM PRODUTO
+function loadProductType(products) {
+  let rows = products.map(product => product.product_type)
+    .filter((value, index, self) => self.indexOf(value) == index);
+
+  let options = rows.map(product_type => {
+    return `<option>${product_type}</option>`
+  })
+  return options;
+}
+
 function productItem(product) {
   const item = `<div class="product" data-name="${product.name}" data-brand="nyx" data-type="bronzer" tabindex="508">
       <figure class="product-figure">
@@ -48,7 +64,7 @@ function productItem(product) {
   </figure>
         <section class="product-description">
           <h1 class="product-name">${product.name}</h1>
-          <div class="product-brands"><span class="product-brand background-brand">Nyx</span>
+          <div class="product-brands"><span class="product-brand background-brand">${product.brand}</span>
             <span class="product-brand background-price">R$ 57.70</span></div>
         </section>
   // CARREGAR OS DETALHES
@@ -56,7 +72,12 @@ function productItem(product) {
   return item;
 }
 
-//EXEMPLO DO CÓDIGO PARA OS DETALHES DE UM PRODUTO
+function sendId(id) {
+  console.log("id:", id);
+  loadPage(id)
+
+}
+
 function loadDetails(product) {
   let details = `<section class="product-details"><div class="details-row">
           <div>Brand</div>
