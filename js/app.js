@@ -3,30 +3,26 @@ console.log("LOADING");
 loadPage()
 
 function loadPage(brand) {
+  let url = "http://makeup-api.herokuapp.com/api/v1/products.json"
 
-  var url = NaN
-  if (!brand) {
-    url = "http://makeup-api.herokuapp.com/api/v1/products.json"
-  } else {
-    url = "http://makeup-api.herokuapp.com/api/v1/products.json?brand=" + brand
-  }
-  console.log("URL" + url)
+  let productPromise = fetch(url);
 
-  let productsPromisse = fetch(url);
-
-  productsPromisse.then((resp) => {
+  productPromise.then((resp) => {
     resp.json().then((products) => {
       document.getElementById("catalog").innerHTML = loadProducts(products);
       document.getElementById("filter-brand").innerHTML = loadBrands(products);
       document.getElementById("filter-type").innerHTML = loadProductType(products);
 
-      fb = document.getElementById("filter-brand")
-
-      fb.addEventListener("change", function () {
-        sendId(this.value)
+      filterBrand = document.getElementById("filter-brand")
+      filterBrand.addEventListener("change", function () {
+        changeBrand(this.value)
       }, false);
-
     });
+
+    filterProductType = document.getElementById("filter-type")
+    filterProductType.addEventListener("change", function () {
+      changeProductType(this.value)
+    }, false);
   });
 }
 
@@ -39,7 +35,7 @@ function loadProducts(products) {
 
 function loadBrands(products) {
   let rows = products.map(product => product.brand)
-    .filter((value, index, self) => self.indexOf(value) == index);
+    .filter((value, index, self) => self.indexOf(value) == index)
 
   let options = rows.map(brand => {
     return `<option value=${brand}>${brand}</option>`
@@ -57,25 +53,50 @@ function loadProductType(products) {
   return options;
 }
 
+function changeBrand(brand) {
+  console.log("Filter brand:", brand);
+
+  url = "http://makeup-api.herokuapp.com/api/v1/products.json?brand=" + brand
+
+  let productsPromisse = fetch(url);
+
+  productsPromisse.then((resp) => {
+    resp.json().then((products) => {
+      document.getElementById("catalog").innerHTML = loadProducts(products);
+    });
+  });
+}
+
+function changeProductType(productType) {
+  console.log("Filter ProductType:", productType);
+
+  url = "http://makeup-api.herokuapp.com/api/v1/products.json?product_type=" + productType
+
+  console.log("URL", url)
+
+  let productsPromisse = fetch(url);
+
+  productsPromisse.then((resp) => {
+    resp.json().then((products) => {
+      document.getElementById("catalog").innerHTML = loadProducts(products);
+    });
+  });
+}
+
 function productItem(product) {
   const item = `<div class="product" data-name="${product.name}" data-brand="nyx" data-type="bronzer" tabindex="508">
       <figure class="product-figure">
         <img src="${product.image_link}">
-  </figure>
-        <section class="product-description">
+      </figure>
+       <section class="product-description">
           <h1 class="product-name">${product.name}</h1>
           <div class="product-brands"><span class="product-brand background-brand">${product.brand}</span>
-            <span class="product-brand background-price">R$ 57.70</span></div>
+            <span class="product-brand background-price">R$ ${product.price * 5.50} </span>
+          </div>
         </section>
   // CARREGAR OS DETALHES
 </div>`;
   return item;
-}
-
-function sendId(id) {
-  console.log("id:", id);
-  loadPage(id)
-
 }
 
 function loadDetails(product) {
