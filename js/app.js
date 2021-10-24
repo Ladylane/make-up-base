@@ -1,4 +1,4 @@
-console.log("LOADING");
+console.log("LOADING")
 
 loadPage()
 
@@ -9,9 +9,9 @@ function loadPage(brand) {
 
   productPromise.then((resp) => {
     resp.json().then((products) => {
-      document.getElementById("catalog").innerHTML = loadProducts(products);
-      document.getElementById("filter-brand").innerHTML = loadBrands(products);
-      document.getElementById("filter-type").innerHTML = loadProductType(products);
+      document.getElementById("catalog").innerHTML = loadProducts(products)
+      document.getElementById("filter-brand").innerHTML = loadBrands(products)
+      document.getElementById("filter-type").innerHTML = loadProductType(products)
 
       filterBrand = document.getElementById("filter-brand")
       filterBrand.addEventListener("change", function () {
@@ -45,7 +45,7 @@ function loadBrands(products) {
 
 function loadProductType(products) {
   let rows = products.map(product => product.product_type)
-    .filter((value, index, self) => self.indexOf(value) == index);
+    .filter((value, index, self) => self.indexOf(value) == index)
 
   let options = rows.map(product_type => {
     return `<option>${product_type}</option>`
@@ -62,7 +62,7 @@ function changeBrand(brand) {
 
   productsPromisse.then((resp) => {
     resp.json().then((products) => {
-      document.getElementById("catalog").innerHTML = loadProducts(products);
+      document.getElementById("catalog").innerHTML = loadProducts(products)
     });
   });
 }
@@ -84,7 +84,9 @@ function changeProductType(productType) {
 }
 
 function productItem(product) {
-  const item = `<div class="product" data-name="${product.name}" data-brand="nyx" data-type="bronzer" tabindex="508">
+  const item = `
+    <div 
+        class="product" data-name="${product.name}" data-brand="nyx" data-type="bronzer" tabindex="508">
       <figure class="product-figure">
         <img src="${product.image_link}">
       </figure>
@@ -94,8 +96,11 @@ function productItem(product) {
             <span class="product-brand background-price">R$ ${product.price * 5.50} </span>
           </div>
         </section>
-  // CARREGAR OS DETALHES
-</div>`;
+      // CARREGAR OS DETALHES
+    </div>`;
+
+  // item += loadDetails(product)
+
   return item;
 }
 
@@ -118,7 +123,7 @@ function loadDetails(product) {
         </div><div class="details-row">
           <div>Category</div>
           <div class="details-bar">
-            <div class="details-bar-bg" style="width= 250"></div>
+            <div class="details-bar-bg" style="width= 250">${product.category}</div>
           </div>
         </div><div class="details-row">
           <div>Product_type</div>
@@ -126,6 +131,7 @@ function loadDetails(product) {
             <div class="details-bar-bg" style="width= 250">bronzer</div>
           </div>
         </div></section>`;
+  return details
 }
 
 // function load(products) {
