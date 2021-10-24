@@ -20,16 +20,17 @@ function loadProducts(products) {
 
 //EXEMPLO DO CÓDIGO PARA UM PRODUTO
 function productItem(product) {
-  const item = `<div class="product" data-name="${product.name}" data-brand="nyx" data-type="bronzer" tabindex="508">
+  const item = `<div class="product" data-name="${product.name}" data-brand="${product.brand}" data-type="${product.type}" tabindex="508">
   <figure class="product-figure">
     <img src="${product.image_link}">
   </figure>
   <section class="product-description">
     <h1 class="product-name">${product.name}</h1>
-    <div class="product-brands"><span class="product-brand background-brand">Nyx</span>
-<span class="product-brand background-price">R$ 57.70</span></div>
+    <div class="product-brands"><span class="product-brand background-brand">${product.brand}</span>
+<span class="product-brand background-price">${product.price}</span></div>
   </section>
   // CARREGAR OS DETALHES
+  
 </div>`;
   return item;
 }
@@ -39,29 +40,30 @@ function loadDetails(product) {
   let details = `<section class="product-details"><div class="details-row">
         <div>Brand</div>
         <div class="details-bar">
-          <div class="details-bar-bg" style="width= 250">nyx</div>
+          <div class="details-bar-bg" style="width= 250">"${product.brand}"</div>
         </div>
       </div><div class="details-row">
         <div>Price</div>
         <div class="details-bar">
-          <div class="details-bar-bg" style="width= 250">10.49</div>
+          <div class="details-bar-bg" style="width= 250">"${product.price}"</div>
         </div>
       </div><div class="details-row">
         <div>Rating</div>
         <div class="details-bar">
-          <div class="details-bar-bg" style="width= 250">5</div>
+          <div class="details-bar-bg" style="width= 250">"${product.rating}"</div>
         </div>
       </div><div class="details-row">
         <div>Category</div>
         <div class="details-bar">
-          <div class="details-bar-bg" style="width= 250"></div>
+          <div class="details-bar-bg" style="width= 250">"${product.category}"</div>
         </div>
       </div><div class="details-row">
         <div>Product_type</div>
         <div class="details-bar">
-          <div class="details-bar-bg" style="width= 250">bronzer</div>
+          <div class="details-bar-bg" style="width= 250">"${product.product_type}"</div>
         </div>
       </div></section>`;
+  return details;
 }
 
 // function load(products) {
