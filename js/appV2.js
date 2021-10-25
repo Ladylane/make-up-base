@@ -46,16 +46,28 @@ function renderAll() {
   brandQuery.innerHTML = renderBrands(getBrands(products))
   typeQuery.innerHTML = renderTypes(getTypes(products))
 
-  // document.querySelectorAll('.product').forEach(item => {
-  //   console.log("item", item.value)
-  //   item.addEventListener('click', event => {
-  //     console.log("teste", this.value)
-  //   })
-  // })
+  document.querySelectorAll('.product').forEach(item => {
+    item.addEventListener('click', function () {
+      let productId = this.getAttribute("value")
+      console.log("Product ", productId)
 
-  document.querySelectorAll('.product').forEach(p => {
-    // console.log("teste", p);
+      // document.getElementById("detalhe").innerHTML = 22
+
+      // loadDetails(productId)
+
+      // this.innertext("TESTE")
+      // console.log("S", this.innertext)
+
+      // console.log("222", this.appendChild("detalhe"))
+
+    }, false)
   })
+
+  // products.forEach(p => console.log("product", p))
+
+  // document.querySelectorAll('.product').forEach(p => {
+  //   // console.log("teste", p);
+  // })
 }
 
 function getBrands(products) {
@@ -106,9 +118,11 @@ function renderProducts(products) {
             <span class="product-brand background-price">R$ ${price * 5.50} </span>
           </div>
         </section>
-    </div>`;
+        <div class="detalhe">teste</div>
+    </div>
+    
+    `;
   });
-
   return studentHtml;
 }
 
@@ -129,8 +143,6 @@ function renderProducts(products) {
 //   return item;
 // }
 
-
-
 function loadDetails(product) {
   let details = `<section class="product-details"><div class="details-row">
           <div>Brand</div>
@@ -150,7 +162,7 @@ function loadDetails(product) {
         </div><div class="details-row">
           <div>Category</div>
           <div class="details-bar">
-            <div class="details-bar-bg" style="width= 250">${product.category}</div>
+            <div class="details-bar-bg" style="width= 250"> -------- ${product}</div>
           </div>
         </div><div class="details-row">
           <div>Product_type</div>
